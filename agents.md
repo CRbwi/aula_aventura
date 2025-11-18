@@ -1,4 +1,4 @@
-# 📝 PROYECTO\_AULA\_AVENTURA: Plan Maestro
+# 📝 PROYECTO\_AULA\_AVENTURA: Plan Maestro (v2.1 - Gamificación Avanzada)
 
 ## 🎯 Perfil del Agente
 
@@ -24,9 +24,9 @@ El proyecto seguirá un flujo de trabajo riguroso por fases, análogo a un proce
 | :--- | :--- | :--- | :--- | :--- |
 | **Fase 1** | **Infraestructura y Acceso Público** | Esquema DB, Conexión DB, Modelos de Usuario, **Login/Registro** (Auth). | **Verificar:** Creación de usuarios de distintos roles. Login/Logout seguro con sesiones. | **Activa** |
 | **Fase 2** | **Gestión de Entidades Base** | Creación de Clases (Docente), Unión a Clases (Estudiante), **Creación de Personaje/Avatar**. | **Verificar:** Docente puede crear, Estudiante puede unirse. Personaje de Estudiante creado en DB. | Pendiente |
-| **Fase 3** | **Motor de Misiones y Progresión Básica** | CRUD de Misiones. Creación del primer tipo de actividad (**Cuestionario**). Sistema de **XP, Nivelación y Leaderboard** (solo XP). | **Verificar:** Docente asigna Quiz. Estudiante lo completa y gana XP. | Pendiente |
-| **Fase 4** | **Gamificación Avanzada y Moneda** | Implementación de la **Moneda Virtual ("Gemmas")**. Creación del módulo **Flashcards**. Panel de Tutor (solo vista). | **Verificar:** Estudiante gana Gemmas con XP. Docente ve el progreso del Tutor. | Pendiente |
-| **Fase 5+** | **Módulos Complejos y Tienda** | **Escape Room** (Desbloqueo secuencial). **Sopas/Crucigramas**. Implementación de **Tienda** y uso de **Poderes de Personaje**. | (Definido en fases futuras) | Pendiente |
+| **Fase 3** | **Motor de Progresión y Cuestionarios** | CRUD de Misiones. Creación del primer tipo de actividad (**Cuestionario**). Sistema de **XP, Nivelación, y el sistema de HP BÁSICO**. | **Verificar:** Estudiante gana XP/pierde HP. Leaderboard de XP funciona. | Pendiente |
+| **Fase 4** | **Gamificación Avanzada y Moneda** | Implementación de la **Moneda Virtual ("Gemmas")**. Módulo **Flashcards y Micro-Misiones Diarias**. Panel de Tutor (solo vista). | **Verificar:** Estudiante gana Gemmas. Misiones diarias rotan correctamente. | Pendiente |
+| **Fase 5+** | **Narrativa, Poderes y Tienda** | **Narrativa de Elección Múltiple** (sustituye Escape Room). Implementación de **Tienda**, **Cajas de Botín** y uso de **Poderes de Personaje** (usando HP). | (Definido en fases futuras) | Pendiente |
 
 ---
 
@@ -46,38 +46,35 @@ Se requiere la siguiente estructura de carpetas (Arquitectura **Modelo-Vista-Con
 
 ## ✨ Descripción Detallada de "AulaAventura"
 
-### 1. 🎮 Sistema de Gamificación y Progresión (Mejorado - Tendencias Actuales)
+### 1. 🎮 Sistema de Gamificación y Progresión (Reforzado con HP)
 
 El sistema debe ser moderno y fomentar la retención y la participación social.
 
-* **Puntos de Experiencia (XP) y Niveles:** Se ganan al completar actividades. La nivelación debe seguir una curva de dificultad creciente ($XP_{requerido} = 100 \times Nivel^2$).
-* **Moneda Virtual:** Implementación de **"Gemmas"** o **"Créditos de Aventura"**.
-    * **Obtención:** Se ganan con XP o recompensas por rachas.
-    * **Uso:** Se gastan en la **"Tienda de Ítems"** para comprar elementos cosméticos de avatar y **Ventajas** temporales (ej. un *doble de XP* por una misión).
-* **Clases y Poderes (Héroe-Base):**
-    * **Clases:** Guerrero, Mago, Sanador.
-    * **Poderes Activos:** Cada clase tendrá 2-3 habilidades que pueden usarse **una vez por sesión de clase** o con un **tiempo de recarga (Cooldown)**, forzando la estrategia de equipo.
-* **Rachas de Actividad (Streaks):** Recompensa con XP y Gemmas por mantener una racha de días consecutivos de actividad, promoviendo el hábito.
-* **Insignias y Logros (Badges):** Recompensas visuales por hitos (ej. "Maestro de Flashcards").
-* **Tabla de Clasificación (Leaderboard):** Ranking de estudiantes por XP. Deberá incluir **filtros** por clase y por período (semanal/total).
+* **Puntos de Experiencia (XP) y Niveles:** Se ganan al completar actividades. Curva de nivelación: $XP_{requerido} = 100 \times Nivel^2$.
+* **Puntos de Vida (HP):** **Nuevo Módulo Fundamental**. Cada personaje tiene HP (ej. 100%). Se pierden por errores académicos o comportamientos negativos. Se recuperan con ítems o poderes del Sanador.
+* **Moneda Virtual ("Gemmas"):** Se obtienen por XP, rachas, o Micro-Misiones. Se usan en la **"Tienda de Ítems"** (cosméticos/ventajas).
+* **Clases y Poderes:**
+    * **Poderes Activos:** Habilidades que usan HP o Gemmas para su activación, con un **Cooldown**. El Sanador puede recuperar HP a un compañero.
+* **Micro-Misiones Diarias y Cajas de Botín:** Objetivos pequeños y constantes (Rachas) con recompensas aleatorias (Cajas) para aumentar el *engagement*.
+* **Insignias y Logros (Badges):** Recompensas visuales por hitos.
+* **Tabla de Clasificación (Leaderboard):** Ranking de estudiantes por XP/Nivel, con filtros por clase y período.
 
 ### 2. Módulo de Creación de Actividades
 
-El docente debe tener un *suite* de herramientas variado:
+El enfoque es la variedad y la baja complejidad técnica inicial.
 
-* **Cuestionarios Interactivos (Kahoot!/Quizizz):** Preguntas de opción múltiple, V/F. **Soporte multimedia** y opción de modo **En Vivo (AJAX)**.
-* **Juegos de Tarjetas (Flashcards):** Repaso con *Spaced Repetition* (modelo simplificado para optimizar la retención).
-* **"Escape Room" Digital (Breakout EDU):** Secuencia lineal de actividades, donde la respuesta correcta a un acertijo genera la **contraseña** que desbloquea la siguiente etapa.
-* **Sopas de letras y Crucigramas (Educaplay):** Creación basada en listas de vocabulario.
-* **Tareas de Subida/Entrega:** Permitir al docente asignar trabajos que requieran la subida de un archivo o texto para revisión manual.
+* **Cuestionarios Interactivos (Kahoot!/Quizizz):** Preguntas de opción múltiple, V/F. **Soporte multimedia**. El fallo resta HP.
+* **Juegos de Tarjetas (Flashcards):** Repaso con *Spaced Repetition* (modelo simplificado). Es el *target* principal de las Micro-Misiones.
+* **Narrativa de Elección Múltiple (Sustituto de Escape Room):** El docente crea una secuencia de contenido donde el avance se basa en la **elección** del estudiante (ej. "Opción A te lleva al punto B de la Misión"). La elección incorrecta puede restar HP o XP.
+* **Tareas de Subida/Entrega:** Permite la revisión manual de trabajos (para Docente).
 
 ### 3. Panel del Docente (Dashboard)
 
 El centro de mando para la gestión de la clase.
 
-* **Vista de Progreso:** Nivel, XP, Gemmas y Clase de Personaje de cada estudiante.
+* **Vista de Progreso:** Nivel, XP, **HP**, Gemmas y Clase de Personaje de cada estudiante.
 * **Informes y Analíticas:** Generación de informes de rendimiento por Misión y por alumno.
-* **Gestión de Refuerzo:** Capacidad de otorgar **XP y Gemmas manualmente** por comportamiento positivo o participación.
+* **Gestión de Refuerzo:** Capacidad de otorgar/restar **HP, XP y Gemmas manualmente**.
 * **Herramientas de Clase:** Generación y gestión del código de invitación de clase.
 
 ---
@@ -93,9 +90,9 @@ Genera el SQL completo para crear las siguientes tablas, asegurando las claves f
 * `usuarios`
 * `clases`
 * `usuarios_clases`
-* `personajes` (Debe incluir `monedas_virtuales`, `xp`, `nivel`, `tipo_personaje`).
+* `personajes` (Debe incluir **`hp`**, `monedas_virtuales`, `xp`, `nivel`, `tipo_personaje`).
 * `misiones`
-* `actividades` (Usando `contenido_json` para almacenar la estructura de los retos).
+* `actividades`
 * `respuestas_actividades`
 * `insignias` y `usuarios_insignias`
 
